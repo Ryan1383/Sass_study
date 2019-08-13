@@ -1,6 +1,34 @@
 // scss에서는 변수 선언시 $를 붙인다.
 
 $blue: #228be6;
+$gray: #495057;
+$pink: #f06595;
+
+// 아래 &.blue, &.gray, &.pink와 같이 비슷한 패턴의 코드가 반복되는 경우
+// mixin을 사용하여 코드의 단축이 가능하다.
+// 이러한 mixin코드를 @include name() 을 통해 사용
+@mixin button-color($color) {
+    background: $color;
+
+    &:hover {
+        background: lighten($color, 10%);
+    }
+
+    &:active {
+        background: darken($color, 10%);
+    }
+
+    &.outline {
+        color: $color;
+        background: none;
+        border: 1px solid $color;
+
+        &:hover {
+            background: $color;
+            color: white;
+        }
+    }
+}
 
 .Button {
     display: inline-flex;
@@ -31,17 +59,42 @@ $blue: #228be6;
 
     background: $blue;
 
-    &:hover {
-        //& 연산자는 자기자신을 지칭.
-        background: lighten($blue, 10%);
+    &.blue {
+        // &:hover {
+        //     //& 연산자는 자기자신을 지칭.
+        //     background: lighten($blue, 10%);
+        // }
+
+        // &:active {
+        //     background: darken($blue, 10%);
+        // }
+        @include button-color($blue);
+
     }
 
-    &:active {
-        background: darken($blue, 10%);
+    &.gray {
+        @include button-color($gray);
+
     }
+
+    &.pink {
+        @include button-color($pink);
+    }
+
 
     &+& {
         margin-left: 1rem;
+    }
+
+    &.fullwidth {
+        width: 100%;
+        justify-content: center;
+
+        &+& {
+            margin-left: 0;
+            margin-top: 1rem;
+
+        }
     }
 
 }
